@@ -9,8 +9,9 @@ private:
     int resolution;
 
 public:
-    //значения по умолчанию
-    SmartCamera(string name = "Камера", float power = 5, bool recording = false, int resolution = 720);
+    SmartCamera(string name, float power, bool recording, int resolution);
+    SmartCamera(string name, bool recording);
+    SmartCamera();
     
     void turnOn() override;
     void turnOff() override;
