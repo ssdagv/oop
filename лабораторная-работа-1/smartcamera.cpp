@@ -4,8 +4,15 @@ using namespace std;
 
 SmartCamera::SmartCamera(string name, float power, bool recording, int resolution)
     : SmartDevice(name, power), isRecording(recording), resolution(resolution) 
-{
-}
+{}
+
+SmartCamera::SmartCamera(string name, bool recording)
+    : SmartDevice(name, 5), isRecording(recording), resolution(720) 
+{}
+
+SmartCamera::SmartCamera()
+    : SmartDevice("Камера", 5), isRecording(false), resolution(720) 
+{}
 
 void SmartCamera::turnOn() {
     isPowered = true;
