@@ -1,0 +1,10 @@
+com\vyatsu\smarthome\repository\DeviceLogRepository.class
+com\vyatsu\smarthome\controller\DeviceController.class
+com\vyatsu\smarthome\repository\DeviceRepository.class
+com\vyatsu\smarthome\entity\SmartCamera.class
+com\vyatsu\smarthome\entity\SmartDevice.class
+com\vyatsu\smarthome\repository\RoomRepository.class
+com\vyatsu\smarthome\entity\Room.class
+com\vyatsu\smarthome\entity\DeviceLog.class
+com\vyatsu\smarthome\entity\SmartLight.class
+com\vyatsu\smarthome\SmarthomeApplication.class

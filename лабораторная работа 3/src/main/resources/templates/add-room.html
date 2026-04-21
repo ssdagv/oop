@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить комнату - Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input, select { padding: 5px; margin: 5px; width: 200px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>🏠 Добавить комнату</h1>
+    
+    <form method="post" action="/room/add">
+        <p>Название комнаты: <input type="text" name="name" required></p>
+        <p>Этаж: 
+            <select name="floor">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>Цокольный</option>
+            </select>
+        </p>
+        <p>Площадь (м²): <input type="number" name="area" step="0.5" required></p>
+        <button type="submit">Сохранить</button>
+        <a href="/rooms">Отмена</a>
+    </form>
+</body>
+</html>

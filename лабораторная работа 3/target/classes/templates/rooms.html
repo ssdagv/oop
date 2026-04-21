@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Комнаты - Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .room { border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 8px; background: #e8f5e9; cursor: pointer; }
+        .room:hover { background: #c8e6c9; }
+        .device-list { margin-top: 10px; margin-left: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px; display: none; }
+        .device-list.show { display: block; }
+        .device-item { border-bottom: 1px solid #ddd; padding: 5px; margin: 5px 0; }
+        .light { background: #fff3e0; }
+        .camera { background: #e0f0ff; }
+        button { margin: 5px; padding: 5px 10px; cursor: pointer; }
+        .btn-add { background: #4CAF50; color: white; padding: 10px; text-decoration: none; display: inline-block; margin: 5px; border-radius: 5px; }
+        .btn-on { background: #4CAF50; color: white; border: none; }
+        .btn-off { background: #f44336; color: white; border: none; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+        .room-header { display: flex; justify-content: space-between; align-items: center; }
+        .toggle-btn { background: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+    </style>
+    <script>
+        function toggleDevices(roomId) {
+            var element = document.getElementById('devices-' + roomId);
+            element.classList.toggle('show');
+        }
+    </script>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>🏠 Комнаты в доме</h1>
+    
+    <div>
+        <a href="/room/add" class="btn-add">➕ Добавить комнату</a>
+    </div>
+    
+    <h2>Список комнат:</h2>
+    <div th:each="room : ${rooms}" class="room">
+        <div class="room-header">
+            <div>
+                <strong th:text="${room.name}"></strong> - 
+                Этаж: <span th:text="${room.floor}"></span> | 
+                Площадь: <span th:text="${room.area}"></span> м² |
+                Устройств: <span th:text="${room.devices.size()}"></span>
+            </div>
+            <button class="toggle-btn" th:onclick="|toggleDevices('${room.id}')|">📋 Показать устройства</button>
+        </div>
+        
+        <div th:id="|devices-${room.id}|" class="device-list">
+            <h4>Устройства в комнате:</h4>
+            <div th:if="${room.devices.empty}">
+                <p>📭 В этой комнате нет устройств</p>
+            </div>
+            <div th:each="device : ${room.devices}" class="device-item" th:classappend="${device.class.simpleName == 'SmartLight'} ? 'light' : 'camera'">
+                <p th:text="${device.info}"></p>
+                
+                <form method="post" th:action="@{|/${device.id}/on|}" style="display: inline;">
+                    <button type="submit" class="btn-on">🔛 Включить</button>
+                </form>
+                <form method="post" th:action="@{|/${device.id}/off|}" style="display: inline;">
+                    <button type="submit" class="btn-off">🔌 Выключить</button>
+                </form>
+                
+                <a th:href="@{|/light/${device.id}/edit|}" 
+                   th:if="${device.class.simpleName == 'SmartLight'}" 
+                   class="btn-edit" 
+                   style="display: inline-block; padding: 5px 10px; text-decoration: none; background: #2196F3; color: white; border-radius: 5px;">
+        ✏️ Изменить
+    </a>
+                
+                <div th:if="${device.class.simpleName == 'SmartCamera'}">
+                    <form method="post" th:action="@{|/camera/${device.id}/record|}" style="display: inline;">
+                        <button type="submit" class="btn-on">🔴 Запись</button>
+                    </form>
+                    <form method="post" th:action="@{|/camera/${device.id}/stop|}" style="display: inline;">
+                        <button type="submit" class="btn-off">⏹️ Стоп</button>
+                    </form>
+                </div>
+                
+                <form method="post" th:action="@{|/${device.id}/delete|}" style="display: inline;">
+                    <button type="submit" class="btn-off" onclick="return confirm('Удалить устройство?')">🗑️ Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <p th:if="${rooms.empty}">📭 Нет комнат. Добавьте первую!</p>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Логи устройства - Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .log { border-bottom: 1px solid #eee; padding: 8px; margin: 5px 0; }
+        .log-info { background: #f5f5f5; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+        button { margin: 5px; padding: 5px 10px; cursor: pointer; }
+        .btn-back { background: #2196F3; color: white; text-decoration: none; padding: 8px 15px; display: inline-block; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>📋 История действий</h1>
+    <h2>Устройство: <span th:text="${device.name}"></span></h2>
+    
+    <a href="/" class="btn-back">← Назад к устройствам</a>
+    
+    <h3>Логи:</h3>
+    <div th:if="${logs.empty}">
+        <p>📭 Нет записей о действиях с этим устройством.</p>
+    </div>
+    
+    <div th:each="log : ${logs}" class="log" th:classappend="${log.action == 'TURN_ON'} ? 'log-info' : ''">
+        <p>
+            <strong>📅 Время:</strong> <span th:text="${log.timestamp}"></span><br>
+            <strong>⚡ Действие:</strong> 
+            <span th:text="${log.action == 'TURN_ON' ? '🔛 Включение' : ''}"></span>
+            <span th:text="${log.action == 'TURN_OFF' ? '🔌 Выключение' : ''}"></span>
+            <span th:text="${log.action == 'BRIGHTNESS_CHANGE' ? '💡 Изменение яркости' : ''}"></span>
+            <span th:text="${log.action == 'START_RECORDING' ? '🔴 Начало записи' : ''}"></span>
+            <span th:text="${log.action == 'STOP_RECORDING' ? '⏹️ Остановка записи' : ''}"></span>
+            <br>
+            <strong>📝 Подробности:</strong> <span th:text="${log.details}"></span>
+        </p>
+    </div>
+</body>
+</html>

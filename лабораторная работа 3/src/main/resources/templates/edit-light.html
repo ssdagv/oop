@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать свет - Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input, select { padding: 5px; margin: 5px; width: 200px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>✏️ Редактировать свет</h1>
+    
+    <form th:method="post" th:action="@{|/light/${light.id}/edit|}">
+        <p>Название: <input type="text" name="name" th:value="${light.name}" required></p>
+        <p>Мощность (Вт): <input type="number" name="powerConsumption" th:value="${light.powerConsumption}" step="0.5"></p>
+        <p>Яркость (0-100): <input type="number" name="brightness" th:value="${light.brightness}" min="0" max="100"></p>
+        <p>Цвет: 
+            <select name="colorTemperature">
+                <option th:selected="${light.colorTemperature == 'Теплый'}" value="Теплый">Теплый</option>
+                <option th:selected="${light.colorTemperature == 'Дневной'}" value="Дневной">Дневной</option>
+                <option th:selected="${light.colorTemperature == 'Холодный'}" value="Холодный">Холодный</option>
+            </select>
+        </p>
+        <button type="submit">Сохранить изменения</button>
+        <a href="/">Отмена</a>
+    </form>
+</body>
+</html>

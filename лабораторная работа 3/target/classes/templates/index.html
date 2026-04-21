@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .device { border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 8px; }
+        .light { background: #fff3e0; }
+        .camera { background: #e0f0ff; }
+        button { margin: 5px; padding: 5px 10px; cursor: pointer; }
+        .btn-add { background: #4CAF50; color: white; padding: 10px; text-decoration: none; display: inline-block; margin: 5px; border-radius: 5px; }
+        .btn-on { background: #4CAF50; color: white; border: none; }
+        .btn-off { background: #f44336; color: white; border: none; }
+        .btn-delete { background: #ff9800; color: white; border: none; }
+        .btn-edit { background: #2196F3; color: white; border: none; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>🏠 Умный дом</h1>
+    
+    <div>
+        <a href="/light/add" class="btn-add">➕ Добавить свет</a>
+        <a href="/camera/add" class="btn-add">📷 Добавить камеру</a>
+    </div>
+    
+    <h2>Устройства:</h2>
+    <div th:each="device : ${devices}" th:classappend="${device.class.simpleName == 'SmartLight'} ? 'light' : 'camera'" class="device">
+        <p th:text="${device.info}"></p>
+        
+        <!-- Кнопки вкл/выкл -->
+        <form method="post" th:action="@{|/${device.id}/on|}" style="display: inline;">
+            <button type="submit" class="btn-on">🔛 Включить</button>
+        </form>
+        <form method="post" th:action="@{|/${device.id}/off|}" style="display: inline;">
+            <button type="submit" class="btn-off">🔌 Выключить</button>
+        </form>
+        
+        <!-- Кнопка редактирования -->
+        <a th:href="@{|/${device.class.simpleName == 'SmartLight' ? 'light' : 'camera'}/${device.id}/edit|}" class="btn-edit" style="display: inline-block; padding: 5px 10px; text-decoration: none; background: #2196F3; color: white; border-radius: 5px;">✏️ Изменить</a>
+        
+        <!-- Кнопка удаления -->
+        <form method="post" th:action="@{|/${device.id}/delete|}" style="display: inline;">
+            <button type="submit" class="btn-delete" onclick="return confirm('Удалить устройство?')">🗑️ Удалить</button>
+        </form>
+        
+        <!-- Специальные кнопки для СВЕТА -->
+        <div th:if="${device.class.simpleName == 'SmartLight'}">
+            <form method="post" th:action="@{|/light/${device.id}/dim|}" style="display: inline;">
+                <input type="number" name="brightness" min="0" max="100" placeholder="Новая яркость" style="width: 100px;">
+                <button type="submit" class="btn-edit">💡 Сменить яркость</button>
+            </form>
+        </div>
+        
+        <!-- Специальные кнопки для КАМЕРЫ -->
+        <div th:if="${device.class.simpleName == 'SmartCamera'}">
+            <form method="post" th:action="@{|/camera/${device.id}/record|}" style="display: inline;">
+                <button type="submit" class="btn-on">🔴 Запись</button>
+            </form>
+            <form method="post" th:action="@{|/camera/${device.id}/stop|}" style="display: inline;">
+                <button type="submit" class="btn-off">⏹️ Стоп</button>
+            </form>
+        </div>
+    </div>
+    
+    <p th:if="${devices.empty}">📭 Нет устройств. Добавьте первое!</p>
+</body>
+</html>

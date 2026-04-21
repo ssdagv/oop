@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать камеру - Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input, select { padding: 5px; margin: 5px; width: 200px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>✏️ Редактировать камеру</h1>
+    
+    <form th:method="post" th:action="@{|/camera/${camera.id}/edit|}">
+        <p>Название: <input type="text" name="name" th:value="${camera.name}" required></p>
+        <p>Мощность (Вт): <input type="number" name="powerConsumption" th:value="${camera.powerConsumption}" step="0.5"></p>
+        <p>Разрешение: 
+            <select name="resolution">
+                <option th:selected="${camera.resolution == 720}" value="720">720p</option>
+                <option th:selected="${camera.resolution == 1080}" value="1080">1080p</option>
+                <option th:selected="${camera.resolution == 2160}" value="2160">4K</option>
+            </select>
+        </p>
+        <button type="submit">Сохранить изменения</button>
+        <a href="/">Отмена</a>
+    </form>
+</body>
+</html>

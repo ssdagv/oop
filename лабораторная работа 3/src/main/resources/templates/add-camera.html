@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить камеру - Умный дом</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input, select { padding: 5px; margin: 5px; width: 200px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">🏠 Устройства</a>
+        <a href="/rooms">🏠 Комнаты</a>
+    </div>
+    
+    <h1>📷 Добавить умную камеру</h1>
+    
+    <form method="post" action="/camera/add">
+        <p>Название: <input type="text" name="name" required></p>
+        <p>Мощность (Вт): <input type="number" name="powerConsumption" value="5" step="0.5"></p>
+        <p>Разрешение: 
+            <select name="resolution">
+                <option value="720">720p</option>
+                <option value="1080" selected>1080p</option>
+                <option value="2160">4K</option>
+            </select>
+        </p>
+        <p>Комната:
+            <select name="room.id">
+                <option value="">-- Выберите комнату --</option>
+                <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.name}"></option>
+            </select>
+        </p>
+        <button type="submit">Сохранить</button>
+        <a href="/">Отмена</a>
+    </form>
+</body>
+</html>
